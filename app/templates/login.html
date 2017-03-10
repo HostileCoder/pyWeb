@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <title>Login page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="static/bootstrap.min.css" rel="stylesheet" media="screen">
+  </head>
+  <body>
+    <div class="container">
+      <h1>Please login</h1>
+     
+      <form action="" method="post" >
+        {{ form.hidden_tag() }}
+        <br>
+        <label><b>Name</b></label>
+        <br>
+        {{ form.email(size=20) }}
+        {% for error in form.email.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        <br> 
+        <label><b>Password</b></label>
+        <br>
+        {{ form.password(size=20) }}
+        {% for error in form.password.errors %}
+            <span style="color: red;">[{{ error }}]</span>
+        {% endfor %}
+        <br>
+        <input class="btn btn-default" type="submit" value="Login" name="loginform">
+        <br>
+      </form>
+	  <div><a href="/createAcc">or create Account</a></div>
+      <div>{{form.remember_me(size=20)}} Remember me<div>
+      
+      
+      {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+        {% for message in messages %}
+            <li>{{ message }} </li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+      {% endwith %}
+      
+      
+
+    </div>	
+  </body>
+</html>
