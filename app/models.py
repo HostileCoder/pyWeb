@@ -6,7 +6,8 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(64), index=True, unique=True)
     password = db.Column(db.String(64), index=True, unique=True)
-
+    project = db.relationship('Project', backref='author', lazy='dynamic')
+    
     @property
     def is_authenticated(self):
         return True
@@ -27,3 +28,12 @@ class User(db.Model):
     
     def __repr__(self):
         return '<User %r>' % (self.nickname)
+        
+class Project(db.Model):
+    id = db.Column(db.Integer, primary_key = True)
+    name = db.Column(db.String(140))
+    description = db.Column(db.String(500))
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+    def __repr__(self):
+        return '<Post %r>' % (self.body)

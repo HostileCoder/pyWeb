@@ -10,20 +10,11 @@ from .models import User
 def index():
     #user = {'nickname': 'Miguel'}
     user= current_user;
-    posts = [
-        {
-            'author': {'nickname': 'John'},
-            'body': 'Beautiful day in Portland!'
-        },
-        {
-            'author': {'nickname': 'Susan'},
-            'body': 'The Avengers movie was so cool!'
-        }
-    ]
+    project=user.project;
     return render_template("index.html",
                            title='Home',
                            user=user,
-                           posts=posts)
+                           project=project)
 
 			   
 @app.route('/')
