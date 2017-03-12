@@ -4,7 +4,9 @@
     <h1>Hi, {{ user.email }}!</h1>
     <div class="container">
     {% if project %}  
-    {{ project.name }}
+    <label><b>{{ project.name }}</label></b>
+    <br>
+    {{ project.description }}
     {% endif %}
     </div>
 </body>

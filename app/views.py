@@ -2,15 +2,14 @@ from flask import render_template, Response, redirect, url_for, request, session
 from flask_login import LoginManager, login_required, login_user,  logout_user, current_user
 from app import app,lm
 from .logform import LoginForm
-from .models import User
-
+from .models import User, Project
 @app.route('/')
 @app.route('/index')
 @login_required
 def index():
     #user = {'nickname': 'Miguel'}
-    user= current_user;
-    project=user.project;
+    user= current_user
+    project=Project.query.filter_by(user_id=user.id).first()
     return render_template("index.html",
                            title='Home',
                            user=user,
