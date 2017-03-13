@@ -2,24 +2,13 @@ from flask import Flask, Response
 from flask_login import LoginManager, UserMixin, login_required
 from app import db
 
-class User(db.Model):
+#tutorial
+class User(db.Model,UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(64), index=True, unique=True)
     password = db.Column(db.String(64), index=True, unique=True)
     project = db.relationship('Project', backref='author', lazy='dynamic')
     
-    @property
-    def is_authenticated(self):
-        return True
-
-    @property
-    def is_active(self):
-        return True
-
-    @property
-    def is_anonymous(self):
-        return False
-
     def get_id(self):
         try:
             return unicode(self.id)  # python 2
