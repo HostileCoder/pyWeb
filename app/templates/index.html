@@ -1,13 +1,22 @@
 {% extends "base.html" %}
 {% block content %}
 <body>
+    
     <h1>Hi, {{ user.email }}!</h1>
+    
     <div class="container">
     {% if project %}  
     <label><b>{{ project.name }}</label></b>
     <br>
     {{ project.description }}
     {% endif %}
+    <br>
+    <a href="/edit">Edit</a>
     </div>
+    
+    
+    <a href="/userList">Admin TEST</a>
+    
+  
 </body>
 {% endblock %}

@@ -1,10 +1,13 @@
 from flask import render_template, Response, redirect, url_for, request, session, abort, flash
 from flask_login import LoginManager, login_required, login_user,  logout_user, current_user
-from app import app,lm
+from app import app,lm,rbac
 from .logform import LoginForm
 from .models import User, Project
+
+
 @app.route('/')
 @app.route('/index')
+@rbac.allow(['user','admin'], methods=['Get','POST'])
 @login_required
 def index():
     #user = {'nickname': 'Miguel'}
@@ -18,6 +21,7 @@ def index():
 			   
 @app.route('/')
 @app.route('/login', methods=['GET', 'POST'])
+@rbac.allow(['anonymous'], methods=['GET', 'POST'])
 def login():
     form = LoginForm()
     if form.validate_on_submit():
@@ -31,23 +35,26 @@ def login():
  
 @app.route('/')
 @app.route('/createAcc', methods=['GET', 'POST'])
+@rbac.allow(['user','admin'], methods=['Get','POST'])
 def createAcc():	
     return render_template('createAcc.html')
 	
 	
 @app.route('/')
-@app.route('/userProj', methods=['GET', 'POST'])
-def userPage():	
-    return render_template('userProj.html')	
+@app.route('/userList', methods=['GET', 'POST'])
+@rbac.allow(['admin'], methods=['Get','POST'])
+def userList():	
+    return render_template('userList.html')	
 	
 @lm.user_loader
 def load_user(id):
     return User.query.get(int(id))  
 
 @app.route('/logout')
+@rbac.allow(['user','admin'], methods=['Get','POST'])
 @login_required
 def logout():
     logout_user()
     flash('You have been logged out.')
-    return redirect(url_for('index'))
+    return redirect(url_for('login'))
     
