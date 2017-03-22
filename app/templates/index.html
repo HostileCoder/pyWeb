@@ -5,18 +5,45 @@
     <h1>Hi, {{ user.email }}!</h1>
     
     <div class="container">
-    {% if project %}  
-    <label><b>{{ project.name }}</label></b>
+    <b><label>Project Name:</label></b>
+    {{ project.name }}
     <br>
+    <b><label>Description:</label></b>
     {{ project.description }}
-    {% endif %}
     <br>
-    <a href="/edit">Edit</a>
+    <b><label>Author:</label></b>
+    {{ project.author.email }}
+    <br>
+    <b><label>Invited users:</label></b>
+    {% for i in project.users %}
+        {{ i.email }}
+    {% endfor %}
     </div>
     
     
-    <a href="/userList">Admin TEST</a>
+    <a href="/edit">Edit</a>
+    <a href="/invite/{{project.id }}">Invite</a>
+    <br>
+
+
+   <br>
+   <br>
+   <b><label>Invited Projects:</label></b>
+   <br>
+   {% for p in user.projects %}  
+        <b><label>Project Name:</label></b>
+        {{ p.name }}
+        <br>
+        <b><label>Description:</label></b>
+        {{ p.description }}
+        <br>
+        <b><label>Author:</label></b>
+        {{ p.author.email }}
+        <br>
+    {% endfor %}  
     
-  
+    
+    
+    <a href="/userList">Admin click here</a>  
 </body>
 {% endblock %}

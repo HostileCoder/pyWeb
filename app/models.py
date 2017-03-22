@@ -4,7 +4,13 @@ from flask_login import LoginManager, login_required
 from app import db, rbac
 
 
-        
+users_projects = db.Table(
+    'users_projects',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('project_id', db.Integer, db.ForeignKey('project.id'))
+)
+
+      
 roles_parents = db.Table(
     'roles_parents',
     db.Column('role_id', db.Integer, db.ForeignKey('role.id')),
@@ -25,8 +31,13 @@ class User(db.Model,UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(64), index=True, unique=True)
     password = db.Column(db.String(64), index=True, unique=True)
-    project = db.relationship('Project', backref='author', lazy='dynamic')
-      
+    myprojects = db.relationship('Project', backref='author', lazy='dynamic')   
+    projects = db.relationship(
+        'Project',
+        secondary = users_projects,
+        backref = db.backref('users', lazy='dynamic')
+    )
+          
     roles = db.relationship(
         'Role',
         secondary=users_roles,
@@ -43,7 +54,8 @@ class User(db.Model,UserMixin):
     def get_roles(self):
         for role in self.roles:
             yield role
-                     
+    
+    #Necessary? Part of UserMixin               
     @property
     def is_authenticated(self):
         return True
@@ -63,7 +75,7 @@ class User(db.Model,UserMixin):
             return str(self.id)  # python 3
     
     def __repr__(self):
-        return '<User %r>' % (self.nickname)
+        return '<User %r>' % (self.email)
  
 
 
@@ -73,9 +85,15 @@ class Project(db.Model):
     name = db.Column(db.String(140))
     description = db.Column(db.String(500))
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-
+    
+#    users = db.relationship(
+#        'User',
+#        secondary = users_projects,
+#        backref = db.backref('projects', lazy='dynamic')
+#    )
+    
     def __repr__(self):
-        return '<Post %r>' % (self.body)
+        return '<Name %r>' % (self.description)
         
 
 @rbac.as_role_model

@@ -1,0 +1,15 @@
+<body>
+    
+Invite others to your project
+
+<form action="/inviteUser" method="post">
+{% for user in users %}
+    {% if Cuser.id != user.id  and user not in invited_users %}  
+    <input type="checkbox" name="invited" value={{ user.id }}>{{ user.email }}<br>
+    {% endif %}  
+{% endfor %}  
+  <input type="submit" value="Submit">
+</form>
+
+</body>
+

@@ -13,7 +13,7 @@ lm.login_view = 'login'
 lm.init_app(app)
 
 rbac = RBAC()
-rbac.init_app(app)
+#rbac.init_app(app)
 
 
 from app import views, models
